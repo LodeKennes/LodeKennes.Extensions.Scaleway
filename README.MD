@@ -1,12 +1,12 @@
 # Scaleway Secret Manager Configuration Extension for .NET
 
-This NuGet package provides an extension for integrating Scaleway Secret Manager secrets into your .NET application's configuration system. It allows seamless fetching and management of secrets stored in Scaleway using the Scaleway CLI.
+This NuGet package provides an extension for integrating Scaleway Secret Manager secrets into your .NET application's configuration system. It allows seamless fetching and management of secrets stored in Scaleway using the Scaleway CLI or via self-defined credentials.
 
 ## Features
 
 - Integrate Scaleway secrets into the .NET `IConfiguration` system.
-- Ensure Scaleway CLI is installed and functional.
-- Customizable options for specifying the Scaleway project ID and region.
+- Ensure Scaleway CLI is installed and functional when using `UseCli`.
+- Customizable options for specifying the Scaleway credentials.
 
 ## Installation
 
@@ -29,7 +29,11 @@ var configurationBuilder = new ConfigurationBuilder()
     {
         options.ProjectId = Guid.Parse("your-project-id-here");
         options.Region = "your-region-here"; // Optional: specify the region if needed
-        options.EnableCaching(TimeSpan.FromMinutes(1)); // Optional: enable caching to reduce the number of calls to the Scaleway CLI
+        options.EnableCaching(TimeSpan.FromMinutes(1)); // Optional: enable caching to reduce the number of calls to the Scaleway API
+        
+        // Define the authentication strategy
+        options.UseCli(); // use the Scaleway CLI to fetch credentials
+        options.UseCredentials("<secretKey>", "<region>", "<organizationId>"); // use self-defined credentials
     })
     .Build();
 
@@ -48,6 +52,7 @@ public void ZoneVariableShouldLoad()
         .AddScalewayCliSecrets(options =>
         {
             options.ProjectId = Guid.Parse("7C85EC8F-CAA2-4579-A6B9-FB6581A23E08");
+            options.UseCli();
         })
         .Build();
 

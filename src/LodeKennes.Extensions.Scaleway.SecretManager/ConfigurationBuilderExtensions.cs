@@ -1,4 +1,5 @@
 using LodeKennes.Extensions.Scaleway.SecretManager.Exceptions;
+using LodeKennes.Extensions.Scaleway.SecretManager.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,17 +14,39 @@ public static class ConfigurationBuilderExtensions
     {
         var options = new ScalewaySecretOptions();
         configure?.Invoke(options);
-
-        var scalewaySecretManager = new ScalewayCliManager();
-
-        var isInstalled = scalewaySecretManager.IsInstalled();
         
-        if (!isInstalled)
+        if (options.SecretStrategy == null)
         {
-            throw new ScalewayCliException("Scaleway CLI is not installed");
+            throw new ScalewayCliException("Secret strategy must be set");
         }
         
-        var configInfo = scalewaySecretManager.RetrieveConfig();
+        ScalewayCliConfigInfo configInfo;
+        
+        if (options.SecretStrategy == ScalewaySecretOptions.ScalewaySecretStrategy.Cli)
+        {
+            var scalewaySecretManager = new ScalewayCliManager();
+
+            var isInstalled = scalewaySecretManager.IsInstalled();
+        
+            if (!isInstalled)
+            {
+                throw new ScalewayCliException("Scaleway CLI is not installed");
+            }
+            
+            configInfo = scalewaySecretManager.RetrieveConfig();
+        }
+        else
+        {
+            configInfo = new ScalewayCliConfigInfo
+            {
+                Profile = new ScalewayCliConfigInfo.ScalewayCliConfigInfoProfile
+                {
+                    SecretKey = options.SecretKey!,
+                    DefaultRegion = options.Region!,
+                    DefaultOrganizationId = Guid.Parse(options.OrganizationId!)
+                }
+            };
+        }
         
         var dataProtectionKeysDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
