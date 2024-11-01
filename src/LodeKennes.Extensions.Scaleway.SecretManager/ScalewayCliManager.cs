@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using LodeKennes.Extensions.Scaleway.SecretManager.Exceptions;
 using LodeKennes.Extensions.Scaleway.SecretManager.Json;
 using LodeKennes.Extensions.Scaleway.SecretManager.Models;
@@ -55,9 +56,16 @@ public sealed class ScalewayCliManager
             throw new ScalewayCliException($"Error retrieving config info: {error}");
         }
 
-        throw new ScalewayCliException(text);
-
-        // var configInfo = JsonSerializer.Deserialize(text, SecretManagerJsonSerializerContext.Default.ScalewayCliConfigInfo);
-        // return configInfo!;
+        var objectRegex = new Regex("({.*})", RegexOptions.Compiled | RegexOptions.Multiline);
+        
+        var match = objectRegex.Match(text);
+        if (!match.Success)
+        {
+            throw new ScalewayCliException("Could not find JSON object in output");
+        }
+        
+        text = match.Value;
+        var configInfo = JsonSerializer.Deserialize(text, SecretManagerJsonSerializerContext.Default.ScalewayCliConfigInfo);
+        return configInfo!;
     }
 }
