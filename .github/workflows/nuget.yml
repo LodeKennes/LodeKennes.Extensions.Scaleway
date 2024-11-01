@@ -26,6 +26,8 @@ jobs:
       - name: "Restore"
         run: dotnet restore ./src/LodeKennes.Extensions.Scaleway.SecretManager/
       - name: "Build"
-        run: dotnet build --no-restore -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager
+        run: dotnet build --no-restore -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager/
       - name: "Run tests"
-        run: dotnet test -c Release ./test/LodeKennes.Extensions.Scaleway.Tests
+        run: dotnet test -c Release ./test/LodeKennes.Extensions.Scaleway.Tests/
+      - name: "Create nuget package"
+        run: dotnet pack  -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager/
