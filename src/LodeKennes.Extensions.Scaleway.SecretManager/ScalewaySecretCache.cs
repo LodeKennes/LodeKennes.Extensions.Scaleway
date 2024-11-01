@@ -1,4 +1,5 @@
 using System.Text.Json;
+using LodeKennes.Extensions.Scaleway.SecretManager.Json;
 using LodeKennes.Extensions.Scaleway.SecretManager.Models;
 using Microsoft.AspNetCore.DataProtection;
 
@@ -16,7 +17,7 @@ internal sealed class ScalewaySecretCache(string location, TimeSpan? ttl, IDataP
             Items = items
         };
         
-        var serialized = JsonSerializer.Serialize(cached);
+        var serialized = JsonSerializer.Serialize(cached, SecretManagerJsonSerializerContext.Default.CachedScalewayDictionary);
         var protectedJson = dataProtector.Protect(serialized);
         File.WriteAllText(_cachePath, protectedJson);
     }
@@ -31,7 +32,7 @@ internal sealed class ScalewaySecretCache(string location, TimeSpan? ttl, IDataP
         
         var protectedJson = File.ReadAllText(_cachePath);
         var serialized = dataProtector.Unprotect(protectedJson);
-        var cached = JsonSerializer.Deserialize<CachedScalewayDictionary>(serialized);
+        var cached = JsonSerializer.Deserialize(serialized, SecretManagerJsonSerializerContext.Default.CachedScalewayDictionary);
         
         if (cached == null || cached.Expires < DateTimeOffset.UtcNow)
         {
