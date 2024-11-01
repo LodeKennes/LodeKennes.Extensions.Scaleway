@@ -30,4 +30,4 @@ jobs:
       - name: "Run tests"
         run: dotnet test -c Release ./test/LodeKennes.Extensions.Scaleway.Tests/
       - name: "Create nuget package"
-        run: dotnet pack  -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager/
+        run: dotnet pack -o ./nuget-package -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager/
