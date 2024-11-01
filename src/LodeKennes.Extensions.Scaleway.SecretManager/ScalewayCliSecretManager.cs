@@ -31,7 +31,7 @@ internal sealed class ScalewayCliSecretManager
             throw new ScalewayCliException($"Error while executing command: {error}");
         }
         
-        return error.Contains(expectedOutput, StringComparison.InvariantCultureIgnoreCase);
+        return error.IndexOf(expectedOutput, StringComparison.InvariantCultureIgnoreCase) == -1;
     }
     
     public ScalewayCliSecretListItem[] RetrieveSecrets(string projectId, string region)
@@ -70,7 +70,7 @@ internal sealed class ScalewayCliSecretManager
             UseShellExecute = false,
             CreateNoWindow = true
         })!;
-        result.WaitForExitAsync();
+        result.WaitForExit();
         
         var text = result.StandardOutput.ReadToEnd();
         var error = result.StandardError.ReadToEnd();
