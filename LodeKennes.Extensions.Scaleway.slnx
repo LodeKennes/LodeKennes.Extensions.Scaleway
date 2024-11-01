@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="src\LodeKennes.Extensions.Scaleway.SecretManager\LodeKennes.Extensions.Scaleway.SecretManager.csproj" Type="Classic C#" />
+  <Project Path="test\LodeKennes.Extensions.Scaleway.Tests\LodeKennes.Extensions.Scaleway.Tests.csproj" Type="Classic C#" />
+</Solution>
