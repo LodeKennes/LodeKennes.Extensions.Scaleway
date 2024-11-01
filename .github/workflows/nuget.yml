@@ -1,0 +1,29 @@
+name: "Build nuget package"
+on:
+  push:
+    branches: 
+      - master
+jobs:
+  BuildTestAndPush:
+    name: "Build test and push"
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@master
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v4.1.0
+        with:
+          dotnet-version: 8.x
+      - name: Use CLI
+        uses: scaleway/action-scw@v0
+        with:
+          save-config: true
+          export-config: true
+          version: v2.24.0
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+      - name: "Restore"
+        run: dotnet restore -c Release
+      - name: "Build"
+        run: dotnet build --no-restore -c Release
+      - name: "Run tests"
+        run: dotnet test -c Release
