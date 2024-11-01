@@ -54,7 +54,6 @@ public sealed class ScalewayCliManager
         {
             throw new ScalewayCliException($"Error retrieving config info: {error}");
         }
-        Console.WriteLine(text);
         
         var configInfo = JsonSerializer.Deserialize(text, SecretManagerJsonSerializerContext.Default.ScalewayCliConfigInfo);
         return configInfo!;
