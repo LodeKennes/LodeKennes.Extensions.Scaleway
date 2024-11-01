@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager.Models;
 
-internal sealed class ScalewayCliSecretVersionAccess
+public sealed class ScalewayCliSecretVersionAccess
 {
     [JsonPropertyName("secret_id")] public Guid SecretId { get; set; }
 

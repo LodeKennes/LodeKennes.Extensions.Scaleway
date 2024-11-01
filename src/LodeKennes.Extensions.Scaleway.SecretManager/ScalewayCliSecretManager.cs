@@ -6,7 +6,7 @@ using LodeKennes.Extensions.Scaleway.SecretManager.Models;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
-internal sealed class ScalewayCliSecretManager
+public sealed class ScalewayCliSecretManager
 {
     public bool IsInstalled()
     {
