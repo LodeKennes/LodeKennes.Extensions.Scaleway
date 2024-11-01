@@ -31,7 +31,7 @@ public sealed class ScalewayCliSecretManager
             throw new ScalewayCliException($"Error while executing command: {error}");
         }
         
-        return error.IndexOf(expectedOutput, StringComparison.InvariantCultureIgnoreCase) == -1;
+        return error.IndexOf(expectedOutput, StringComparison.InvariantCultureIgnoreCase) > -1;
     }
     
     public ScalewayCliSecretListItem[] RetrieveSecrets(string projectId, string region)
