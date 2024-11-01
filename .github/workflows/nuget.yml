@@ -26,8 +26,8 @@ jobs:
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
           default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
-      - name: "Activate profile"
-        run: scw config dump
+      - name: "Output config info as json"
+        run: scw config info --output json
       - name: "Restore"
         run: dotnet restore ./src/LodeKennes.Extensions.Scaleway.SecretManager/
       - name: "Build"
