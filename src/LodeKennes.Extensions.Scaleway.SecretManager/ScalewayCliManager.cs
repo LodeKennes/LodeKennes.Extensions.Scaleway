@@ -6,7 +6,7 @@ using LodeKennes.Extensions.Scaleway.SecretManager.Models;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
-public sealed class ScalewayCliSecretManager
+public sealed class ScalewayCliManager
 {
     public bool IsInstalled()
     {
@@ -33,13 +33,13 @@ public sealed class ScalewayCliSecretManager
         
         return error.IndexOf(expectedOutput, StringComparison.InvariantCultureIgnoreCase) > -1;
     }
-    
-    public ScalewayCliSecretListItem[] RetrieveSecrets(string projectId, string region)
+
+    public ScalewayCliConfigInfo RetrieveConfig()
     {
         var result = Process.Start(new ProcessStartInfo
         {
             FileName = "scw",
-            Arguments = $"secret secret list --output json region={region} project-id={projectId}",
+            Arguments = "config info --output json",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
@@ -52,35 +52,10 @@ public sealed class ScalewayCliSecretManager
         
         if (!string.IsNullOrWhiteSpace(error))
         {
-            throw new ScalewayCliException($"Error while executing command: {error}");
+            throw new ScalewayCliException($"Error retrieving config info: {error}");
         }
         
-        var secrets = JsonSerializer.Deserialize(text, SecretManagerJsonSerializerContext.Default.ScalewayCliSecretListItemArray);
-        return secrets!;
-    }
-    
-    public ScalewayCliSecretVersionAccess RetrieveSecretValue(ScalewayCliSecretListItem listItem)
-    {
-        var result = Process.Start(new ProcessStartInfo
-        {
-            FileName = "scw",
-            Arguments = $"secret version access {listItem.Id} revision=latest --output json",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        })!;
-        result.WaitForExit();
-        
-        var text = result.StandardOutput.ReadToEnd();
-        var error = result.StandardError.ReadToEnd();
-        
-        if (!string.IsNullOrWhiteSpace(error))
-        {
-            throw new ScalewayCliException($"Error while executing command: {error}");
-        }
-        
-        var secrets = JsonSerializer.Deserialize(text, SecretManagerJsonSerializerContext.Default.ScalewayCliSecretVersionAccess);
-        return secrets!;
+        var configInfo = JsonSerializer.Deserialize(text, SecretManagerJsonSerializerContext.Default.ScalewayCliConfigInfo);
+        return configInfo!;
     }
 }

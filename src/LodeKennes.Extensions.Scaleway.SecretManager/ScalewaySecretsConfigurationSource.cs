@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration.Memory;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
-internal sealed class ScalewayCliConfigurationSource(ScalewayCliSecretManager scalewaySecretManager, ScalewaySecretCache scalewaySecretCache, bool cache, string projectId, string region) : IConfigurationSource
+internal sealed class ScalewayCliConfigurationSource(ScalewayHttpSecretManager scalewayHttpSecretManager, ScalewaySecretCache scalewaySecretCache, bool cache) : IConfigurationSource
 {
     private static readonly Mutex Mutex = new(true, nameof(ScalewayCliConfigurationSource));
     
@@ -15,7 +15,7 @@ internal sealed class ScalewayCliConfigurationSource(ScalewayCliSecretManager sc
 
         if (Mutex.WaitOne())
         {
-            var secrets = scalewaySecretManager.RetrieveSecrets(projectId, region);
+            var secrets = scalewayHttpSecretManager.RetrieveSecrets();
             
             if (cache && scalewaySecretCache.TryLoad(out var cached))
             {
@@ -27,7 +27,7 @@ internal sealed class ScalewayCliConfigurationSource(ScalewayCliSecretManager sc
             
                 foreach (var scalewayCliSecretListItem in secrets)
                 {
-                    var secretValue = scalewaySecretManager.RetrieveSecretValue(scalewayCliSecretListItem);
+                    var secretValue = scalewayHttpSecretManager.RetrieveSecretValue(scalewayCliSecretListItem);
                     configurationSource[scalewayCliSecretListItem.Name] = Encoding.UTF8.GetString(Convert.FromBase64String(secretValue.Data));
                 }
 

@@ -5,16 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
-public static class IConfigurationBuilderExtensions
+public static class ConfigurationBuilderExtensions
 {
     private const string Purpose = "lk-scw-secrets";
     
-    public static IConfigurationBuilder AddScalewayCliSecrets(this IConfigurationBuilder builder, Action<ScalewaySecretOptions> configure)
+    public static IConfigurationBuilder AddScalewayCliSecrets(this IConfigurationBuilder builder, Action<ScalewaySecretOptions>? configure)
     {
         var options = new ScalewaySecretOptions();
-        configure(options);
-        
-        var scalewaySecretManager = new ScalewayCliSecretManager();
+        configure?.Invoke(options);
+
+        var scalewaySecretManager = new ScalewayCliManager();
 
         var isInstalled = scalewaySecretManager.IsInstalled();
         
@@ -22,6 +22,8 @@ public static class IConfigurationBuilderExtensions
         {
             throw new ScalewayCliException("Scaleway CLI is not installed");
         }
+        
+        var configInfo = scalewaySecretManager.RetrieveConfig();
         
         var dataProtectionKeysDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -35,7 +37,9 @@ public static class IConfigurationBuilderExtensions
         var dp = serviceProvider.GetDataProtector(Purpose);
         var scalewaySecretCache = new ScalewaySecretCache(dataProtectionKeysDirectory, options.ProjectId, options.CacheTtl, dp);
 
-        builder.Add(new ScalewayCliConfigurationSource(scalewaySecretManager, scalewaySecretCache, options.CacheEnabled, options.ProjectId.ToString(), options.Region));
+        var scalewayHttpSecretManager = new ScalewayHttpSecretManager(configInfo.Profile.SecretKey, configInfo.Profile.DefaultOrganizationId.ToString(), options.ProjectId.ToString(), configInfo.Profile.DefaultRegion);
+        
+        builder.Add(new ScalewayCliConfigurationSource(scalewayHttpSecretManager, scalewaySecretCache, options.CacheEnabled));
         
         return builder;
     }
