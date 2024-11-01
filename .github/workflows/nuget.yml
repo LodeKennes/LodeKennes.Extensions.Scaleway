@@ -24,8 +24,8 @@ jobs:
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
           default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: "Restore"
-        run: dotnet restore ./LodeKennes.Extensions.Scaleway.slnx
+        run: dotnet restore ./src/LodeKennes.Extensions.Scaleway.SecretManager/
       - name: "Build"
-        run: dotnet build --no-restore -c Release ./LodeKennes.Extensions.Scaleway.slnx
+        run: dotnet build --no-restore -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager
       - name: "Run tests"
-        run: dotnet test -c Release ./LodeKennes.Extensions.Scaleway.slnx
+        run: dotnet test -c Release ./test/LodeKennes.Extensions.Scaleway.Tests
