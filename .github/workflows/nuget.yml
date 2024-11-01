@@ -22,7 +22,7 @@ jobs:
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
       - name: "Restore"
-        run: dotnet restore -c Release
+        run: dotnet restore
       - name: "Build"
         run: dotnet build --no-restore -c Release
       - name: "Run tests"
