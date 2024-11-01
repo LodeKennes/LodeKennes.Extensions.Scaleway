@@ -29,6 +29,7 @@ var configurationBuilder = new ConfigurationBuilder()
     {
         options.ProjectId = Guid.Parse("your-project-id-here");
         options.Region = "your-region-here"; // Optional: specify the region if needed
+        options.EnableCaching(TimeSpan.FromMinutes(1)); // Optional: enable caching to reduce the number of calls to the Scaleway CLI
     })
     .Build();
 
