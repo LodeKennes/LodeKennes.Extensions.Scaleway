@@ -8,7 +8,7 @@ internal sealed class ScalewayCliSecretVersionAccess
 
     [JsonPropertyName("revision")] public long Revision { get; set; }
 
-    [JsonPropertyName("data")] public string Data { get; set; }
+    [JsonPropertyName("data")] public string Data { get; set; } = string.Empty;
 
-    [JsonPropertyName("type")] public string Type { get; set; }
+    [JsonPropertyName("type")] public string Type { get; set; } = string.Empty;
 }
