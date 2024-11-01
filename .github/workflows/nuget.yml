@@ -32,4 +32,4 @@ jobs:
       - name: "Create nuget package"
         run: dotnet pack -o ./nuget-package -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager/
       - name: "Publish package"
-        run: dotnet nuget push ./nuget-package --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./nuget-package/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
