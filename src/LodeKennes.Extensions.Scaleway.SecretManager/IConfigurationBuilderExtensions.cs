@@ -33,7 +33,7 @@ public static class IConfigurationBuilderExtensions
 
         var serviceProvider = services.BuildServiceProvider();
         var dp = serviceProvider.GetDataProtector(Purpose);
-        var scalewaySecretCache = new ScalewaySecretCache(dataProtectionKeysDirectory, options.CacheTtl, dp);
+        var scalewaySecretCache = new ScalewaySecretCache(dataProtectionKeysDirectory, options.ProjectId, options.CacheTtl, dp);
 
         builder.Add(new ScalewayCliConfigurationSource(scalewaySecretManager, scalewaySecretCache, options.CacheEnabled, options.ProjectId.ToString(), options.Region));
         

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.DataProtection;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
-internal sealed class ScalewaySecretCache(string location, TimeSpan? ttl, IDataProtector dataProtector)
+internal sealed class ScalewaySecretCache(string location, Guid projectId, TimeSpan? ttl, IDataProtector dataProtector)
 {
-    private readonly string _cachePath = Path.Combine(location, "cache.json");
+    private readonly string _cachePath = Path.Combine(location, $"{projectId}-cache.json");
     
     public void Save(Dictionary<string, string> items)
     {

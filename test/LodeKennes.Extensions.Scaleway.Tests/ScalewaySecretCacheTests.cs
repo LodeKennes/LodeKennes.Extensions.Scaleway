@@ -29,7 +29,7 @@ public sealed class ScalewaySecretCacheTests : IDisposable
     {
         _cacheLocation = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(_cacheLocation);
-        _cache = new ScalewaySecretCache(_cacheLocation, TimeSpan.FromMinutes(5), new EphemeralDataProtectionProvider().CreateProtector("test"));
+        _cache = new ScalewaySecretCache(_cacheLocation, Guid.NewGuid(), TimeSpan.FromMinutes(5), new EphemeralDataProtectionProvider().CreateProtector("test"));
     }
     
     public void Dispose()
