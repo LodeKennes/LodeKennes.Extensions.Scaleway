@@ -36,5 +36,28 @@ jobs:
         run: dotnet test -c Release ./test/LodeKennes.Extensions.Scaleway.Tests/
       - name: "Create nuget package"
         run: dotnet pack -o ./nuget-package -c Release ./src/LodeKennes.Extensions.Scaleway.SecretManager/
+        
+      - name: Extract version
+        id: vars
+        run: echo "##[set-output name=VERSION;]$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')"
+          
+      - name: Create GitHub Tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            execSync(`git tag -a v${{ steps.vars.outputs.VERSION }} -m 'Release v${{ steps.vars.outputs.VERSION }}'`);
+            execSync('git push --tags');
+            
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.vars.outputs.VERSION }}
+          release_name: Release v${{ steps.vars.outputs.VERSION }}
+          draft: false
+          prerelease: false  
+    
       - name: "Publish package"
         run: dotnet nuget push ./nuget-package/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
