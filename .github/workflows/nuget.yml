@@ -44,7 +44,7 @@ jobs:
         run: echo "##[set-output name=VERSION;]$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')"
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
