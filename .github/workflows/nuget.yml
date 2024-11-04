@@ -45,15 +45,14 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          
-      - name: Create GitHub Tag
-        uses: actions/github-script@v6
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
         with:
-          script: |
-            const { execSync } = require('child_process');
-            execSync(`git tag -a v${{ steps.vars.outputs.VERSION }} -m 'Release v${{ steps.vars.outputs.VERSION }}'`);
-            execSync('git push --tags');
-            
+          github_token: ${{ secrets.GITHUB_TOKEN }}      
+          custom_tag: ${{ steps.vars.outputs.VERSION }}
+
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
