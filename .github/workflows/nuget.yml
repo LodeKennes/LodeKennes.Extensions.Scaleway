@@ -11,7 +11,7 @@ jobs:
     name: "Build test and push"
     runs-on: ubuntu-latest
     steps: 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.1.0
         with:
@@ -46,12 +46,12 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
+      - uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}      
-          custom_tag: ${{ steps.vars.outputs.VERSION }}
+          tag: ${{ steps.vars.outputs.VERSION }}
+          tag_exists_error: true
+          message: ${{ steps.vars.outputs.VERSION }}
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
