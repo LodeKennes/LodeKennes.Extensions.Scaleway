@@ -1,5 +1,9 @@
 # Scaleway Secret Manager Configuration Extension for .NET
 
+![NuGet Version](https://img.shields.io/nuget/v/LodeKennes.Extensions.Scaleway.SecretManager)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LodeKennes/LodeKennes.Extensions.Scaleway/nuget.yml)
+
+
 This NuGet package provides an extension for integrating Scaleway Secret Manager secrets into your .NET application's configuration system. It allows seamless fetching and management of secrets stored in Scaleway using the Scaleway CLI or via self-defined credentials.
 
 ## Features
