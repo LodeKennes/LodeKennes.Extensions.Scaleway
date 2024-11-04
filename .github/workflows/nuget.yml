@@ -43,18 +43,6 @@ jobs:
         id: vars
         run: echo "##[set-output name=VERSION;]$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')"
 
-      - name: Set Git user
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-      - uses: rickstaa/action-create-tag@v1
-        id: "tag_create"
-        with:
-          tag: ${{ steps.vars.outputs.VERSION }}
-          tag_exists_error: true
-          message: ${{ steps.vars.outputs.VERSION }}
-
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
