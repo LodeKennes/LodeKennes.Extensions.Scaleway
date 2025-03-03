@@ -9,14 +9,6 @@ public sealed class ScalewayCliManagerTests
     private readonly ScalewayCliManager _manager = new();
 
     [Fact]
-    public void IsInstalled()
-    {
-        var isInstalled = _manager.IsInstalled();
-
-        Assert.True(isInstalled);
-    }
-    
-    [Fact]
     public void CanRetrieveConfig()
     {
         var isInstalled = _manager.RetrieveConfig();

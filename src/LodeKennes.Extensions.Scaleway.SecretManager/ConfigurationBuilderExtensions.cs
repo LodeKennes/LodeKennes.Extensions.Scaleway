@@ -25,15 +25,13 @@ public static class ConfigurationBuilderExtensions
         if (options.SecretStrategy == ScalewaySecretOptions.ScalewaySecretStrategy.Cli)
         {
             var scalewaySecretManager = new ScalewayCliManager();
-
-            var isInstalled = scalewaySecretManager.IsInstalled();
-        
-            if (!isInstalled)
-            {
-                throw new ScalewayCliException("Scaleway CLI is not installed");
-            }
             
             configInfo = scalewaySecretManager.RetrieveConfig();
+            
+            if (configInfo.Profile == null)
+            {
+                throw new ScalewayCliException("No profile found in Scaleway CLI config");
+            }
         }
         else
         {
