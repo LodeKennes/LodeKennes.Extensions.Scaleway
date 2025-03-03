@@ -23,7 +23,7 @@ jobs:
         with:
           save-config: true
           export-config: true
-          version: v2.30.0
+          version: v2.33.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -43,15 +43,6 @@ jobs:
         id: vars
         run: echo "##[set-output name=VERSION;]$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')"
 
-      - name: Create GitHub Release
-        uses: actions/create-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.vars.outputs.VERSION }}
-          release_name: Release v${{ steps.vars.outputs.VERSION }}
-          draft: false
-          prerelease: false  
     
       - name: "Publish package"
         run: dotnet nuget push ./nuget-package/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
