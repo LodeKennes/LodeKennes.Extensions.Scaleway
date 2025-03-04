@@ -13,8 +13,8 @@ internal sealed class ScalewayCliConfigurationSource(ScalewayHttpSecretManager s
     {
         Dictionary<string, string> configurationSource;
 
-        if (Mutex.WaitOne())
-        {
+        // if (Mutex.WaitOne())
+        // {
             var secrets = scalewayHttpSecretManager.RetrieveSecrets();
             
             if (cache && scalewaySecretCache.TryLoad(out var cached))
@@ -36,11 +36,11 @@ internal sealed class ScalewayCliConfigurationSource(ScalewayHttpSecretManager s
                     scalewaySecretCache.Save(configurationSource);
                 }
             }
-        }
-        else
-        {
-            throw new ScalewayCliException("Mutex could not be acquired");
-        }
+        // }
+        // else
+        // {
+        //     throw new ScalewayCliException("Mutex could not be acquired");
+        // }
         
         return new MemoryConfigurationProvider(new MemoryConfigurationSource
         {
