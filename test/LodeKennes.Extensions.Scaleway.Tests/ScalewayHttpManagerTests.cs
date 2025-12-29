@@ -13,7 +13,7 @@ public sealed class ScalewayHttpSecretManagerTests : IDisposable
         var client = new ScalewayCliManager();
         var config = client.RetrieveConfig();
         
-        _manager = new ScalewayHttpSecretManager(config.Profile.SecretKey, config.Profile.DefaultOrganizationId.ToString(), "53c67a1c-be43-4329-80e4-30118ef65dd3", config.Profile.DefaultRegion);
+        _manager = new ScalewayHttpSecretManager(config.Profile.SecretKey, config.Profile.DefaultOrganizationId.ToString(), "53c67a1c-be43-4329-80e4-30118ef65dd3", config.Profile.DefaultRegion, []);
     }
     
     
