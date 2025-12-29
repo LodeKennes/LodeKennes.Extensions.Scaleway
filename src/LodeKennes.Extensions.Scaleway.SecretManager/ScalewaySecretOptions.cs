@@ -11,6 +11,7 @@ public sealed class ScalewaySecretOptions
     internal string? SecretKey { get; set; }
     internal string? Region { get; set; }
     internal string? OrganizationId { get; set; }
+    internal string[] Tags { get; set; } = [];
     
     public void UseCli()
     {
@@ -29,6 +30,11 @@ public sealed class ScalewaySecretOptions
     {
         CacheEnabled = true;
         CacheTtl = ttl ?? TimeSpan.FromMinutes(5);
+    }
+
+    public void FilterByTags(params string[] tags)
+    {
+        Tags = tags.Distinct().ToArray();
     }
     
     public enum ScalewaySecretStrategy

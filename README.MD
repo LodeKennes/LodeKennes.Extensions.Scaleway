@@ -57,6 +57,7 @@ public void ZoneVariableShouldLoad()
         {
             options.ProjectId = Guid.Parse("7C85EC8F-CAA2-4579-A6B9-FB6581A23E08");
             options.UseCli();
+            options.FilterByTags("zone");
         })
         .Build();
 
