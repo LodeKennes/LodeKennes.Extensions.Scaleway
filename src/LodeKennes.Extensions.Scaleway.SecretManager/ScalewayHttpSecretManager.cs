@@ -24,6 +24,34 @@ public sealed class ScalewayHttpSecretManager(
 
     public ScalewaySecretItem[] RetrieveSecrets()
     {
+        var allSecrets = new Dictionary<string, SecretsListResponse.Secret>();
+
+        if (tags.Length == 0)
+        {
+            // No tags specified, fetch all secrets without tag filtering
+            FetchSecretsWithTag(null, allSecrets);
+        }
+        else
+        {
+            // Fetch secrets for each tag separately (OR logic)
+            foreach (var tag in tags)
+            {
+                FetchSecretsWithTag(tag, allSecrets);
+            }
+        }
+
+        var secrets = allSecrets.Values.Select(secret => new ScalewaySecretItem
+        {
+            Id = Guid.Parse(secret.Id),
+            ProjectId = Guid.Parse(projectId),
+            Name = secret.Name,
+            Region = region
+        }).ToArray();
+        return secrets!;
+    }
+
+    private void FetchSecretsWithTag(string? tag, Dictionary<string, SecretsListResponse.Secret> allSecrets)
+    {
         var list = new List<SecretsListResponse.Secret>();
 
         SecretsListResponse response;
@@ -32,9 +60,9 @@ public sealed class ScalewayHttpSecretManager(
             var url =
                 $"/secret-manager/v1beta1/regions/{region}/secrets?organization_id={organizationId}&project_id={projectId}";
 
-            if (tags.Length > 0)
+            if (tag is not null)
             {
-                url = tags.Aggregate(url, (current, tag) => current + $"&tags={string.Join(",", tag)}");
+                url += $"&tags={tag}";
             }
 
             var responseTask = _httpClient.GetStringAsync(url);
@@ -44,14 +72,14 @@ public sealed class ScalewayHttpSecretManager(
             list.AddRange(response.Secrets);
         } while (list.Count < response.TotalCount);
 
-        var secrets = list.Select(secret => new ScalewaySecretItem
+        // Add to dictionary using Id as key to deduplicate secrets that have multiple matching tags
+        foreach (var secret in list)
         {
-            Id = Guid.Parse(secret.Id),
-            ProjectId = Guid.Parse(projectId),
-            Name = secret.Name,
-            Region = region
-        }).ToArray();
-        return secrets!;
+            if (!allSecrets.ContainsKey(secret.Id))
+            {
+                allSecrets[secret.Id] = secret;
+            }
+        }
     }
 
     public ScalewayCliSecretVersionAccess RetrieveSecretValue(ScalewaySecretItem scalewaySecretItem)
