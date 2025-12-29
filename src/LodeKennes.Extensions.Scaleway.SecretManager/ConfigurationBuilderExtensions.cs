@@ -58,7 +58,7 @@ public static class ConfigurationBuilderExtensions
         var dp = serviceProvider.GetDataProtector(Purpose);
         var scalewaySecretCache = new ScalewaySecretCache(dataProtectionKeysDirectory, options.ProjectId, options.CacheTtl, dp);
 
-        var scalewayHttpSecretManager = new ScalewayHttpSecretManager(configInfo.Profile.SecretKey, configInfo.Profile.DefaultOrganizationId.ToString(), options.ProjectId.ToString(), configInfo.Profile.DefaultRegion);
+        var scalewayHttpSecretManager = new ScalewayHttpSecretManager(configInfo.Profile.SecretKey, configInfo.Profile.DefaultOrganizationId.ToString(), options.ProjectId.ToString(), configInfo.Profile.DefaultRegion, options.Tags);
         
         builder.Add(new ScalewayCliConfigurationSource(scalewayHttpSecretManager, scalewaySecretCache, options.CacheEnabled));
         
