@@ -17,7 +17,7 @@ public sealed class ScalewayHttpSecretManagerTests : IDisposable
     }
     
     
-    [Fact]
+    [Fact(Skip = "Needs secret access")]
     public void HasSecrets()
     {
         var secrets = _manager.RetrieveSecrets();
@@ -25,7 +25,7 @@ public sealed class ScalewayHttpSecretManagerTests : IDisposable
         Assert.NotEmpty(secrets);
     }
     
-    [Fact]
+    [Fact(Skip = "Needs secret access")]
     public void HasSecretValue()
     {
         var secrets = _manager.RetrieveSecrets();

@@ -5,7 +5,7 @@ namespace LodeKennes.Extensions.Scaleway.Tests;
 
 public sealed class ConfigurationBuilderTests
 {
-    [Fact]
+    [Fact(Skip = "Needs secret access")]
     public void ZoneVariableShouldLoad()
     {
         var configurationBuilder = new ConfigurationBuilder()
@@ -23,7 +23,7 @@ public sealed class ConfigurationBuilderTests
         Assert.Equal("intellua.com", zone);
     }
     
-    [Fact]
+    [Fact(Skip = "Needs secret access")]
     public void ZoneVariableShouldLoad_Cached()
     {
         var configurationBuilder = new ConfigurationBuilder()
