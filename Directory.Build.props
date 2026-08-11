@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>12</LangVersion>
+
+    <Version>1.1.4</Version>
+    <Authors>Lode Kennes</Authors>
+    <Company>Lode Kennes</Company>
+    <PublisherName>Lode Kennes</PublisherName>
+    <RepositoryUrl>https://github.com/LodeKennes/LodeKennes.Extensions.Scaleway</RepositoryUrl>
+  </PropertyGroup>
+</Project>

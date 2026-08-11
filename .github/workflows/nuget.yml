@@ -41,7 +41,7 @@ jobs:
         
       - name: Extract version
         id: vars
-        run: echo "version=$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(grep '<Version>' Directory.Build.props | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')" >> "$GITHUB_OUTPUT"
 
       - name: "Publish package"
         run: dotnet nuget push ./nuget-package/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
