@@ -7,15 +7,10 @@ using LodeKennes.Extensions.Scaleway.SecretManager.Models;
 
 namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
-public sealed class ScalewayCliManager
+public sealed class ScalewayCliManager(string? cliPath = null)
 {
     private const string CliPathEnvironmentVariable = "SCW_CLI_PATH";
-    private readonly string _cliPath;
-
-    public ScalewayCliManager(string? cliPath = null)
-    {
-        _cliPath = ResolveCliPath(cliPath, Environment.GetEnvironmentVariable(CliPathEnvironmentVariable));
-    }
+    private readonly string _cliPath = ResolveCliPath(cliPath, Environment.GetEnvironmentVariable(CliPathEnvironmentVariable));
 
     internal static string ResolveCliPath(string? cliPath, string? environmentCliPath)
     {
