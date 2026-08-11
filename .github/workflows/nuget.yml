@@ -51,7 +51,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.vars.outputs.version }}
         run: |
-          tag="v${VERSION}-build.${GITHUB_RUN_NUMBER}"
+          tag="v${VERSION}"
           gh release create "$tag" ./nuget-package/*.nupkg \
             --target "$GITHUB_SHA" \
             --title "Release $tag" \
