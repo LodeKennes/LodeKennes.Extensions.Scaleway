@@ -13,7 +13,7 @@ public sealed class ScalewaySecretCacheTests : IDisposable
     {
         var items = new Dictionary<string, string>
         {
-            ["zone"] = "intellua.com"
+            ["zone"] = "lodekennes.com"
         };
         
         _cache.Save(items);

@@ -40,7 +40,7 @@ public sealed class ScalewayHttpSecretManagerTests : IDisposable
         
         var base64Decoded = Encoding.UTF8.GetString(Convert.FromBase64String(secretValue.Data));
         Assert.NotEmpty(base64Decoded);
-        Assert.Equal("intellua.com", base64Decoded);
+        Assert.Equal("lodekennes.com", base64Decoded);
     }
     
     public void Dispose()

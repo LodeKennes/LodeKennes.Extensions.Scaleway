@@ -66,7 +66,7 @@ public void ZoneVariableShouldLoad()
 
     var zone = configurationBuilder["zone"];
     Assert.NotNull(zone);
-    Assert.True("intellua.com" == zone);
+    Assert.True("lodekennes.com" == zone);
 }
 ```
 

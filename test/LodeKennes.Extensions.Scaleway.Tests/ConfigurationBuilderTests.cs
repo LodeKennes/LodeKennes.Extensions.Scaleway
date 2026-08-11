@@ -20,7 +20,7 @@ public sealed class ConfigurationBuilderTests
 
         var zone = configurationBuilder["zone"];
         Assert.NotNull(zone);
-        Assert.Equal("intellua.com", zone);
+        Assert.Equal("lodekennes.com", zone);
     }
     
     [Fact(Skip = "Needs secret access")]
@@ -39,7 +39,7 @@ public sealed class ConfigurationBuilderTests
 
         var zone = configurationBuilder["zone"];
         Assert.NotNull(zone);
-        Assert.Equal("intellua.com", zone);
+        Assert.Equal("lodekennes.com", zone);
         
         configurationBuilder = new ConfigurationBuilder()
             .AddScalewayCliSecrets(options =>
@@ -51,6 +51,6 @@ public sealed class ConfigurationBuilderTests
             .Build();
         zone = configurationBuilder["zone"];
         Assert.NotNull(zone);
-        Assert.Equal("intellua.com", zone);
+        Assert.Equal("lodekennes.com", zone);
     }
 }
