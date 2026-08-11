@@ -24,7 +24,7 @@ public static class ConfigurationBuilderExtensions
         
         if (options.SecretStrategy == ScalewaySecretOptions.ScalewaySecretStrategy.Cli)
         {
-            var scalewaySecretManager = new ScalewayCliManager();
+            var scalewaySecretManager = new ScalewayCliManager(options.CliPath);
             
             configInfo = scalewaySecretManager.RetrieveConfig();
             

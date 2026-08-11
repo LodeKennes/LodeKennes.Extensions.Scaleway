@@ -18,4 +18,14 @@ public sealed class ScalewayCliManagerTests
         Assert.NotNull(isInstalled.Profile.DefaultRegion);
         Assert.NotNull(isInstalled.Profile.AccessKey);
     }
+
+    [Theory]
+    [InlineData(null, null, "scw")]
+    [InlineData("", "", "scw")]
+    [InlineData(null, "/custom/env/scw", "/custom/env/scw")]
+    [InlineData("/custom/option/scw", "/custom/env/scw", "/custom/option/scw")]
+    public void ResolvesCliPath(string? cliPath, string? environmentCliPath, string expected)
+    {
+        Assert.Equal(expected, ScalewayCliManager.ResolveCliPath(cliPath, environmentCliPath));
+    }
 }

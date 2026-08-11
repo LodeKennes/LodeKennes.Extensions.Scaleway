@@ -11,11 +11,13 @@ public sealed class ScalewaySecretOptions
     internal string? SecretKey { get; set; }
     internal string? Region { get; set; }
     internal string? OrganizationId { get; set; }
+    internal string? CliPath { get; set; }
     internal string[] Tags { get; set; } = [];
     
-    public void UseCli()
+    public void UseCli(string? cliPath = null)
     {
         SecretStrategy = ScalewaySecretStrategy.Cli;
+        CliPath = cliPath;
     }
     
     public void UseCredentials(string secretKey, string region, string organizationId)

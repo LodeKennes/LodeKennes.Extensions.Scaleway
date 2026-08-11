@@ -9,11 +9,29 @@ namespace LodeKennes.Extensions.Scaleway.SecretManager;
 
 public sealed class ScalewayCliManager
 {
+    private const string CliPathEnvironmentVariable = "SCW_CLI_PATH";
+    private readonly string _cliPath;
+
+    public ScalewayCliManager(string? cliPath = null)
+    {
+        _cliPath = ResolveCliPath(cliPath, Environment.GetEnvironmentVariable(CliPathEnvironmentVariable));
+    }
+
+    internal static string ResolveCliPath(string? cliPath, string? environmentCliPath)
+    {
+        if (!string.IsNullOrWhiteSpace(cliPath))
+        {
+            return cliPath!;
+        }
+
+        return string.IsNullOrWhiteSpace(environmentCliPath) ? "scw" : environmentCliPath!;
+    }
+
     public ScalewayCliConfigInfo RetrieveConfig()
     {
         var result = Process.Start(new ProcessStartInfo
         {
-            FileName = "scw",
+            FileName = _cliPath,
             Arguments = "config info --output json",
             RedirectStandardOutput = true,
             RedirectStandardError = true,

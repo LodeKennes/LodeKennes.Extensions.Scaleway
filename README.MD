@@ -37,6 +37,7 @@ var configurationBuilder = new ConfigurationBuilder()
         
         // Define the authentication strategy
         options.UseCli(); // use the Scaleway CLI to fetch credentials
+        // options.UseCli("/custom/path/to/scw"); // optionally override the CLI executable path
         options.UseCredentials("<secretKey>", "<region>", "<organizationId>"); // use self-defined credentials
     })
     .Build();
@@ -72,6 +73,8 @@ public void ZoneVariableShouldLoad()
 ## Requirements
 
 - Scaleway CLI: Ensure that the Scaleway CLI is installed and accessible from your environment.
+  The executable defaults to `scw`. Set the `SCW_CLI_PATH` environment variable or pass a path to
+  `UseCli(path)` to override it; the explicitly supplied path takes precedence over the environment variable.
 - .NET SDK: This package requires .NET 6.0 or later versions.
 
 ### Exception Handling
