@@ -1,7 +1,7 @@
 name: "Build nuget package"
 on:
   push:
-    branches: 
+    branches:
       - master
     paths-ignore:
       - 'README.MD'
@@ -13,9 +13,9 @@ jobs:
     permissions:
       contents: write
     steps: 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.x
       - name: Use CLI
@@ -41,8 +41,18 @@ jobs:
         
       - name: Extract version
         id: vars
-        run: echo "##[set-output name=VERSION;]$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')"
+        run: echo "version=$(grep '<Version>' src/LodeKennes.Extensions.Scaleway.SecretManager/LodeKennes.Extensions.Scaleway.SecretManager.csproj | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')" >> "$GITHUB_OUTPUT"
 
-    
       - name: "Publish package"
-        run: dotnet nuget push ./nuget-package/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./nuget-package/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+      - name: "Create GitHub release"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.vars.outputs.version }}
+        run: |
+          tag="v${VERSION}-build.${GITHUB_RUN_NUMBER}"
+          gh release create "$tag" ./nuget-package/*.nupkg \
+            --target "$GITHUB_SHA" \
+            --title "Release $tag" \
+            --generate-notes
